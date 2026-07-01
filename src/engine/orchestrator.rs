@@ -21,7 +21,6 @@ const TRAIL_LEN: usize = 220;
 pub enum Status {
     Running,
     Captured,
-    Failed,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -175,8 +174,6 @@ impl Simulation {
             self.status = Status::Captured;
             self.drone.phase = FlightPhase::Captured;
             self.metrics.capture_time = Some(self.metrics.elapsed);
-        } else if self.drone.battery <= 0.0 {
-            self.status = Status::Failed;
         }
     }
 

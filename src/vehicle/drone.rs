@@ -1,7 +1,6 @@
 use crate::core::vector::Vector3;
 use crate::physics::dynamics::{boundary_repulsion, linear_drag};
 use crate::physics::state::Body;
-use crate::utils::config;
 use crate::vehicle::parameters::Parameters;
 use crate::vehicle::state_machine::FlightPhase;
 
@@ -9,7 +8,6 @@ use crate::vehicle::state_machine::FlightPhase;
 pub struct Drone {
     pub body: Body,
     pub params: Parameters,
-    pub battery: f64,
     pub phase: FlightPhase,
 }
 
@@ -18,7 +16,6 @@ impl Drone {
         Self {
             body: Body::new(position, Vector3::zeros()),
             params: Parameters::pursuer(),
-            battery: 1.0,
             phase: FlightPhase::Search,
         }
     }
@@ -43,9 +40,5 @@ impl Drone {
         let total = steering + drag + walls;
 
         self.body.integrate(total, dt, self.params.max_speed);
-
-        let effort = steering.magnitude();
-        self.battery =
-            (self.battery - (0.15 + effort) * config::DRONE_BATTERY_DRAIN * dt).max(0.0);
     }
 }

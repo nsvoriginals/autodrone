@@ -121,9 +121,8 @@ fn draw_gauges(f: &mut Frame, area: Rect, sim: &Simulation) {
     ])
     .split(inner);
 
-    let battery = sim.drone.battery.clamp(0.0, 1.0);
-    let battery_color = if battery < 0.2 { Color::Red } else if battery < 0.5 { Color::Yellow } else { Color::Green };
-    labelled_gauge(f, rows[0], "BAT", battery, battery_color, format!("{:>3.0}%", battery * 100.0));
+    let throttle = (sim.telemetry.steering / sim.drone.params.max_accel).clamp(0.0, 1.0);
+    labelled_gauge(f, rows[0], "THR", throttle, Color::Rgb(120, 210, 150), format!("{:>3.0}%", throttle * 100.0));
 
     let speed_ratio = (sim.drone.speed() / sim.drone.params.max_speed).clamp(0.0, 1.0);
     labelled_gauge(f, rows[1], "SPD", speed_ratio, Color::Cyan, format!("{:>3.0}%", speed_ratio * 100.0));
