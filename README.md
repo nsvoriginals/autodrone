@@ -11,13 +11,11 @@ math of guided interception: Kalman filtering, proportional navigation, PID
 control, and potential-field obstacle avoidance, all wired together in one loop
 you can watch run.
 
-```
-┌─ TOP VIEW ───────────────────┐  ┌─ TELEMETRY ──────────┐
-│        ·        ✳ target      │  │ phase     PURSUE     │
-│    ◯obstacle                  │  │ distance  altitude   │
-│              ✈ drone ···trail │  │ closing   TTI  LOS   │
-└──────────────────────────────┘  └──────────────────────┘
-```
+![The full simulation running in a terminal](outputs/full.png)
+
+The full interface: a top tactical view and a side profile view of the chase on
+the left, live telemetry panels on the right, and a controls bar along the
+bottom.
 
 ---
 
@@ -71,6 +69,19 @@ target moves ──► noisy sensor ──► Kalman tracker ──► guidance 
    turn the guidance into a single steering acceleration.
 6. The drone **integrates** its motion, and the loop repeats until the true
    distance drops inside the capture radius.
+
+The chase is drawn from two angles at once — a **top-down tactical view** and a
+**side profile view** (Z → altitude) — with both craft rendered as banking
+quadcopters that leave motion trails:
+
+| Top view | Side profile |
+| :---: | :---: |
+| ![Top-down tactical view](outputs/topview.png) | ![Side profile view](outputs/sideview.png) |
+
+Alongside them, the telemetry panels report the live state of the drone, the
+tracked target, the interception geometry, and the estimator/controller:
+
+![Telemetry panels](outputs/state.png)
 
 ---
 
